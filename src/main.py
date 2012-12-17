@@ -90,6 +90,21 @@ class BaseTasteHandler(BaseHandler):
         callback(json.loads(response.buffer.read()))
 
     @tornado.gen.engine
+    def read_catalog(self, catalog_id, callback):
+        params = {
+            'api_key': self.application.settings_manager.get('api_key'),
+            'format': 'json',
+            'id': catalog_id
+        }
+        base_url = "http://developer.echonest.com/api/v4/catalog/read"
+        req = tornado.httpclient.HTTPRequest(
+            url = base_url + "?" + format_params(params),
+            method = "GET",
+        )
+        response = yield tornado.gen.Task(self.application.http_client.fetch, req)
+        callback(json.loads(response.buffer.read()))
+
+    @tornado.gen.engine
     def update_catalog(self, catalog_id, items, callback):
         params = {
             'api_key': self.application.settings_manager.get('api_key'),
@@ -113,7 +128,7 @@ class BaseTasteHandler(BaseHandler):
         else:
             create_response = yield tornado.gen.Task(self.create_catalog, catalog_name, catalog_type)
             callback(create_response['response']['id'])
-    
+
     def format_update_items(self, scrobbles):
         update_items = []
         for s in scrobbles:
@@ -135,7 +150,7 @@ class BaseTasteHandler(BaseHandler):
                 inner_item['play_count'] = s['play_count']
             if 'favorite' in s and s['favorite']:
                 inner_item['favorite'] = s['favorite']
-            
+
             update_items.append({
                 'action':'update',
                 'item':inner_item,
@@ -158,6 +173,22 @@ class NewTasteHandler(BaseTasteHandler):
         self.format_and_write_response({'cat_id':cat_id})
         self.finish()
 
+class ListTasteHandler(BaseTasteHandler):
+    def _on_finish(self, response):
+        self.format_and_write_response(response)
+
+    @tornado.web.asynchronous
+    @tornado.gen.engine
+    def get(self, uid):
+        # find our catalog
+        cat_id = yield tornado.gen.Task(self.get_or_create_catalog, uid, "song")
+        read_response = yield tornado.gen.Task(self.read_catalog, cat_id)
+        nice_response = {
+            'taste':read_response['response']['catalog']['items']
+        }
+        self.format_and_write_response(nice_response)
+        self.finish()
+
 
 class Application(tornado.web.Application):
     def __init__(self, urls, settings_manager):
@@ -169,8 +200,9 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, urls, **_settings)
 
 urls = (
-    (r"/api/1/(?P<uid>[^\/]+)/tastes/new",     NewTasteHandler),
-    (r"/",                          IndexHandler),
+    (r"/api/1/(?P<uid>[^\/]+)/tastes/new",      NewTasteHandler),
+    (r"/api/1/(?P<uid>[^\/]+)/tastes",          ListTasteHandler),
+    (r"/",                                      IndexHandler),
 )
 
 def get_app(settings_manager):
