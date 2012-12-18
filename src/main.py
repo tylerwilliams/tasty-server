@@ -153,6 +153,7 @@ class BaseTasteHandler(BaseHandler):
                 'song_name': s['song_name'],
                 'item_keyvalues': {
                     'timestamp':s['timestamp'],
+                    'source':s['source'],
                 },
             }
             if 'release_name' in s and s['release_name']:
