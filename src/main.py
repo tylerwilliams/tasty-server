@@ -38,7 +38,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header('Content-Type','application/json; charset=utf-8')
 
     def write_response(self, response):
-        logger.debug(pprint.pformat(response))
+        # logger.debug(pprint.pformat(response))
         self.set_headers()
         return self.write(response)
 
@@ -90,11 +90,13 @@ class BaseTasteHandler(BaseHandler):
         callback(json.loads(response.buffer.read()))
 
     @tornado.gen.engine
-    def read_catalog(self, catalog_id, callback):
+    def read_catalog(self, catalog_id, start, results, callback):
         params = {
             'api_key': self.application.settings_manager.get('api_key'),
             'format': 'json',
-            'id': catalog_id
+            'id': catalog_id,
+            'start': start,
+            'results': results,
         }
         base_url = "http://developer.echonest.com/api/v4/catalog/read"
         req = tornado.httpclient.HTTPRequest(
@@ -129,6 +131,19 @@ class BaseTasteHandler(BaseHandler):
             create_response = yield tornado.gen.Task(self.create_catalog, catalog_name, catalog_type)
             callback(create_response['response']['id'])
 
+    @tornado.gen.engine
+    def read_full_catalog(self, catalog_id, callback):
+        start = 0
+        batch_size = 100
+        read_response = yield tornado.gen.Task(self.read_catalog, catalog_id, start, batch_size)
+        total_num_results = read_response['response']['catalog']['total']
+        results = read_response['response']['catalog']['items']
+        start += batch_size
+        while len(results) < total_num_results:
+            read_response = yield tornado.gen.Task(self.read_catalog, catalog_id, start, batch_size)
+            start += batch_size
+        callback(results)
+    
     def format_update_items(self, scrobbles):
         update_items = []
         for s in scrobbles:
@@ -150,6 +165,8 @@ class BaseTasteHandler(BaseHandler):
                 inner_item['play_count'] = s['play_count']
             if 'favorite' in s and s['favorite']:
                 inner_item['favorite'] = s['favorite']
+            if 'skip' in s and s['skip']:
+                inner_item['skip_count'] = 1
 
             update_items.append({
                 'action':'update',
@@ -166,26 +183,33 @@ class NewTasteHandler(BaseTasteHandler):
     def post(self, uid):
         # find our catalog
         cat_id = yield tornado.gen.Task(self.get_or_create_catalog, uid, "song")
-        taste = json.loads(self.request.body)
+        tastes = json.loads(self.request.body)
+        if not isinstance(tastes, list):
+            tastes = [tastes]
+
         # push our update(s)
-        items = self.format_update_items([taste])
+        items = self.format_update_items(tastes)
         update_response = yield tornado.gen.Task(self.update_catalog, cat_id, items)
         self.format_and_write_response({'cat_id':cat_id})
         self.finish()
 
 class ListTasteHandler(BaseTasteHandler):
-    def _on_finish(self, response):
-        self.format_and_write_response(response)
-
     @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self, uid):
         # find our catalog
         cat_id = yield tornado.gen.Task(self.get_or_create_catalog, uid, "song")
-        read_response = yield tornado.gen.Task(self.read_catalog, cat_id)
+        
+        # get all results
+        results = yield tornado.gen.Task(self.read_full_catalog, cat_id)
+        
+        # sort results
+        results = sorted(results, key=lambda i: i['item_keyvalues']['timestamp'], reverse=True)
+        
         nice_response = {
-            'taste':read_response['response']['catalog']['items']
+            'taste': results[:100], # just in case
         }
+        
         self.format_and_write_response(nice_response)
         self.finish()
 
