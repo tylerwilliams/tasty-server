@@ -141,6 +141,7 @@ class BaseTasteHandler(BaseHandler):
         start += batch_size
         while len(results) < total_num_results:
             read_response = yield tornado.gen.Task(self.read_catalog, catalog_id, start, batch_size)
+            results += read_response['response']['catalog']['items']
             start += batch_size
         callback(results)
     
