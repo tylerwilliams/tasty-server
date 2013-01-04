@@ -3,7 +3,7 @@ import logging
 import ConfigParser
 
 logger = logging.getLogger(__name__)
-CONFIG_FILE_DEFAULT_PATH = "/etc/octoplist.conf"
+CONFIG_FILE_DEFAULT_PATH = "/etc/tasty.conf"
 CONFIG_FILE_SECTION_NAME = "api"
 
 class SettingsManager(object):
@@ -39,7 +39,7 @@ class SettingsManager(object):
 These settings can be overridden with a config file at
 CONFIG_FILE_PATH. Here's an example of a config file:
 
-file: /etc/octoplist.conf
+file: /etc/tasty.conf
 ############################################################
 [api]
 cat = dog

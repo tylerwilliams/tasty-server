@@ -215,11 +215,14 @@ class ListTasteHandler(BaseTasteHandler):
         self.format_and_write_response(nice_response)
         self.finish()
 
+# class AppcastHandler(BaseTasteHandler):
+#     pass
+    
 
 class Application(tornado.web.Application):
     def __init__(self, urls, settings_manager):
         _settings = {
-            'static_path': os.path.join(os.path.dirname(__file__), "static"),
+            # 'static_path': os.path.join(os.path.dirname(os.path.dirname(__file__)), "static"),
         }
         self.settings_manager = settings_manager
         self.http_client = tornado.httpclient.AsyncHTTPClient()
@@ -228,7 +231,9 @@ class Application(tornado.web.Application):
 urls = (
     (r"/api/1/(?P<uid>[^\/]+)/tastes/new",      NewTasteHandler),
     (r"/api/1/(?P<uid>[^\/]+)/tastes",          ListTasteHandler),
-    (r"/",                                      IndexHandler),
+    # (r"/static/appcast/tasty\.xml.*",           AppcastHandler),   
+    (r"/static/(.*)",                           tornado.web.StaticFileHandler, {"path": os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")}), 
+    (r"/",                                      IndexHandler),    
 )
 
 def get_app(settings_manager):
