@@ -5,13 +5,13 @@
       <link>http://localhost:8080/static/appcast/tasty.xml</link>
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
-      <!-- <item>
+      <item>
         <title>Version 2.0.1</title>
         <sparkle:releaseNotesLink>
           http://localhost:8080/static/appcast/tasty_2.0.1/release_notes.html
         </sparkle:releaseNotesLink>
-        <enclosure url="http://localhost:8080/static/appcast/tasty_2.0.1/Tasty_2.0.1.zip" sparkle:version="2.0.1" length="618750" type="application/octet-stream" sparkle:dsaSignature="MCwCFDH+L8hNKTT3kWuEDldhXsOu56EzAhQ/EwwlrFOP/iDw+x/yMgVlnoqf4Q==" />
-      </item> -->
+        <enclosure url="http://localhost:8080/static/appcast/tasty_2.0.1/Tasty_2.0.1.zip" sparkle:version="2.0.1" length="618967" type="application/octet-stream" sparkle:dsaSignature="MC0CFQCHdtmnFFq3tFvYPEwGaaTlccWEQQIUa35ce6cpHB3jBreTwZE2QRKeFEU=" />
+      </item>
       
       <!-- FIRST VERSION WAS 2.0.0, DO NOT UNCOMMENT -->
       <!-- <item>
