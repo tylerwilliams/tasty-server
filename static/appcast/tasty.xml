@@ -12,12 +12,14 @@
         </sparkle:releaseNotesLink>
         <enclosure url="http://localhost:8080/static/appcast/tasty_2.0.1/Tasty_2.0.1.zip" sparkle:version="2.0.1" length="618750" type="application/octet-stream" sparkle:dsaSignature="MCwCFDH+L8hNKTT3kWuEDldhXsOu56EzAhQ/EwwlrFOP/iDw+x/yMgVlnoqf4Q==" />
       </item> -->
-      <item>
+      
+      <!-- FIRST VERSION WAS 2.0.0, DO NOT UNCOMMENT -->
+      <!-- <item>
         <title>Version 2.0.0</title>
         <sparkle:releaseNotesLink>
           http://localhost:8080/static/appcast/tasty_2.0.0/release_notes.html
         </sparkle:releaseNotesLink>
         <enclosure url="http://localhost:8080/static/appcast/tasty_2.0.0/Tasty_2.0.0.zip" sparkle:version="2.0.0" length="618790" type="application/octet-stream" sparkle:dsaSignature="MCwCFCvcEBuPTIOsQ6qqD0syeNvAZEAhAhR2ND/uUr5U1S66cqofOhSA29VELg==" />
-      </item>
+      </item> -->
    </channel>
 </rss>
