@@ -1,4 +1,4 @@
 tasty-server
 ============
 
-Server to proxy tastes into taste profiles
+Server to proxy tastes into taste profilesbump
