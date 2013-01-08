@@ -27,7 +27,7 @@ def setup_curses():
 if __name__ == "__main__":
     usage = 'usage: %prog [options]\n' \
             'example:\n' \
-            '\t %prog -f local_playlistability.conf'
+            '\t %prog -f /path/to/tasty.conf'
 
     parser = optparse.OptionParser(usage=usage)
 
