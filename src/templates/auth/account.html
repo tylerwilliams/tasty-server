@@ -1,0 +1,23 @@
+<!-- include the basic css + js -->
+{% extends "../base.html" %}
+
+<!-- this ought to match the heading text defined in topbar.html-->
+{% block subtitle %}Account{% end %}
+
+{% block content %}
+
+
+  <div class="container">
+    <div id="content" class="span9">
+      <p><block>id: </block>{{ account.id }}</p>
+      <p><block>email: </block>{{ escape(account.email or "") }}</p>      
+      <p><block>consumer key: </block>{{ escape(account.consumer_key) }}</p>
+      <p><block>shared secret: </block>{{ escape(account.shared_secret) }}</p>
+    </div>
+  </div>
+  <hr>
+
+{% end %}
+
+
+

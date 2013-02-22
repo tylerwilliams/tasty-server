@@ -1,0 +1,13 @@
+<div class="masthead">
+  <ul class="nav nav-pills pull-right">
+    <li><a href="/">Home</a></li>
+    <!-- <li><a href="/api">API</a></li> -->
+    <li><a href="/tastes">My Tastes</a></li>    
+    {% if not current_user %}
+      <li><a href="/login">Login</a></li>
+    {% else %}
+      <li><a href="/logout">Logout</a></li>
+    {% end %}
+  </ul>
+  <h3 class="muted">Tasty</h3>
+</div>

@@ -1,0 +1,54 @@
+<!-- include the basic css + js -->
+{% extends "base.html" %}
+
+<!-- this ought to match the heading text defined in topbar.html-->
+{% block subtitle %}API{% end %}
+
+{% block content %}
+<hr>
+
+<div class="container">
+  <div class="row" id="faq">
+    <div id="api_sidebar" class="span2">
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#taste_format">Taste Spec</a></li>
+        <li><a href="#posting_tastes">New tastes</a></li>
+        <li><a href="#reading_tastes">Read tastes</a></li>        
+        <li><a href="#deleting_tastes">Delete tastes</a></li>
+      </ul>
+    </div>
+    <div id="content" class="span9">
+      <section id="taste_format">
+        <h4>Taste Format</h4>
+        <code class="prettyprint">
+          {
+            "source": "iTunes.app",
+            "artist_name": "Beyoncé",
+            "song_name": "Halo",
+            "timestamp": 1358699502
+          }
+        </code>
+        <p>The Taste format is super simple and only *requires* 4 fields. They are above. The "source" field is a free form string field describing the audio source responsible for the playing taste. The artist name and song name fields are  </p>
+      </section>
+      <section id="posting_tastes">
+        <b>New tastes</b>
+        <p>Posting a new taste is easy; you can post a single taste or an array of tastes to the user specific endpoint and the server will respond with an array map of taste timstamp to boolean values. The value indicates whether or not the taste was successfully recorded on the server. If it was not, it's the client's responsibility to try again later.</p>
+      </section>
+      <section id="reading_tastes">
+        <b>returns</b>
+        <p>returns</p>
+      </section>
+    </div>
+  </div>
+</div>
+{% end %}
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    prettyPrint();
+  });
+</script>
+
+{% block extra_js %}{% end %}
+

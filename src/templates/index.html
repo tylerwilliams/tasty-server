@@ -1,0 +1,50 @@
+<!-- include the basic css + js -->
+{% extends "base.html" %}
+
+<!-- this ought to match the heading text defined in topbar.html-->
+{% block subtitle %}Home{% end %} 
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>Tasty! (.app)</h1>
+    <p class="lead">A mac <em>menubar</em> app to capture and analyze your music taste</p>
+    <div class="row-fluid">
+       <div class="span12 pagination-centered"><a href="/static/appcast/latest/Tasty.zip"><img class="well" src="/static/img/tasty_256x256.png" /></a></div>
+    </div>
+    <a class="btn btn-large btn-success" href="/static/appcast/latest/Tasty.zip">Try it today!</a>
+  </div>
+  <hr>
+
+  <div class="row-fluid marketing">
+    <div class="span6">
+      <h3><i class="icon-bar-chart icon-large"></i> Analysis</h3>
+      <p>See regular analysis of your changing tastes (Has your top genre changed from hip-hop to punk? Are you really into  ☁kitty ♡ this week? Are you listening to a lot of artists with "Smith" in their name? Find out!)</p>
+      <br></br>
+      
+      <h3><i class="icon-rss icon-large"></i> New Music Notifications</h3>
+      <p>Get a simple heads-up when an artist you like releases new music</p>
+      <br></br>
+
+      <h3><i class="icon-key icon-large"></i> Taste Profile</h3>
+      <p>Own your very own taste profile that you can go hand to the friendly people over at <a href="http://the.echonest.com">The Echo Nest</a> to get a radio-style playlist, recommendations, and more!</p>
+      <br></br>
+    </div>
+
+    <div class="span6">
+      <h3><i class="icon-cloud-download icon-large"></i> Data</h3>
+      <p>Download a complete archive of your listening history (go wild, you wonderful data nerd); it's <em>YOUR</em> data</p>
+      <br></br>
+
+      <h3><i class="icon-cogs icon-large"></i> API</h3>
+      <p>Build your own client against an API designed to make it easy add to and manipulate your tastes</p>
+      <br></br>
+
+      <h3><i class="icon-tags icon-large"></i> Fingerprinting</h3>
+      <p>Help create an open database of musical fingerprints that can be used to correct bad metadata and dedupe audio</p>
+      <br></br>
+    </div>
+  </div>
+
+  <hr>
+
+{% end %}

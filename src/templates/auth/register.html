@@ -1,0 +1,113 @@
+<!-- include the basic css + js -->
+{% extends "../base.html" %}
+
+<!-- this ought to match the heading text defined in topbar.html-->
+{% block subtitle %}Register{% end %}
+
+{% block extra_css %}
+<style type="text/css">
+.form-signin {
+  max-width: 350px;
+  padding: 19px 29px 29px;
+  margin: 0 auto 20px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+  font-size: 16px;
+  height: auto;
+  margin-bottom: 15px;
+  padding: 7px 9px;
+  width:350px;
+}
+</style>
+{% end %}
+
+{% block include_js %}
+<script src="/static/js/jquery.validate.min.js"></script>
+{% end %}
+
+{% block include_css %}
+<link href="/static/css/validate.css" rel="stylesheet">
+{% end %}
+
+{% block content %}
+  <form class="form-signin" method="POST" id="registration-form" action="/register">
+    <h2 class="form-signin-heading centered">Register</h2>
+    <div class="control-group">
+      <div class="controls">
+        <input type="text" class="input-xlarge input-block-level" value="{{ escape(login) }}" name="login" id="login" readonly="readonly" rel="popover" data-content="Your Tasty login" data-original-title="Login">
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input type="text" class="input-xlarge input-block-level" value="{{ escape(service) }}" name="service" id="service" readonly="readonly" rel="popover" data-content="Your login service" data-original-title="Service">
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        {% if email %}
+        <input type="text" class="input-xlarge input-block-level" name="email" id="email" value="{{ escape(email) }}" placeholder="{{ escape(email) }}" rel="popover" data-content="What’s your email address?" data-original-title="Email">
+        {% else %}
+        <input type="text" class="input-xlarge input-block-level" name="email" id="email" placeholder="email" rel="popover" data-content="What’s your email address?" data-original-title="Email">
+        {% end %}
+        <input type="hidden" name="next" value="{{ escape(next) }}" />        
+      </div>
+    </div>
+    {% raw xsrf_form_html() %}
+    <button class="btn btn-large btn-success btn-block" type="submit" id="submit-button">Complete registration and sign me in!</button>
+  </form>
+{% end %}
+
+{% block extra_js %}
+<script type="text/javascript">
+
+$(document).ready(function(){
+    // sane email validation regex: if people want to enter a bs email address, let them. 
+    $.validator.methods.email = function(a, b) {
+      return this.optional(b) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a);
+    };
+    
+    // show input field purposes on hover
+    $('#registration-form input').hover(function() {
+      $(this).popover('show');
+    }, function() {
+      $(this).popover('hide');
+    });
+
+    // hook up the validation
+    $('#registration-form').validate({
+        rules: {
+          email: {
+            required: false,
+            email: true
+          },
+        },
+        highlight: function(label) {
+            $(label).closest('.control-group').addClass('error');
+            $("#submit-button").attr("disabled", "true");
+        },
+        unhighlight: function(label) {
+            $(label).closest('.control-group').addClass('success');
+            $("#submit-button").removeAttr("disabled");
+        },
+        success: function(label) {
+          $(label).closest('.control-group').addClass('success');
+          $("#submit-button").removeAttr("disabled");
+        }
+      });
+
+}); // end document.ready
+</script>
+{% end %}

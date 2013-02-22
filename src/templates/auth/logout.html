@@ -1,0 +1,23 @@
+<!-- include the basic css + js -->
+{% extends "../base.html" %}
+
+<!-- this ought to match the heading text defined in topbar.html-->
+{% block subtitle %}Logout{% end %} 
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>Goodbye!</h1>
+    <p class="lead">Redirecting you now...</p>
+  </div>
+  <hr>
+{% end %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    setTimeout(function() {
+      window.location.replace("/");
+    }, 1500);
+  });
+</script>
+{% end %}
